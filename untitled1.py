@@ -46,3 +46,32 @@ m.fillcontinents(color='coral',lake_color='aqua')
 m.drawmapboundary()
 m.drawcountries()
 plt.show()
+#visualizing world map
+import pandas as pd
+import folium
+data = pd.read_csv('earthquake_data.csv')
+world_map = folium.Map(location=[0, 0], zoom_start=2)
+for index, row in data.iterrows():
+ # Extract relevant data
+ latitude = row['Latitude']
+ longitude = row['Longitude']
+ magnitude = row['Magnitude']
+ location = row['Location Source']
+ folium.CircleMarker(
+ location=[latitude, longitude],
+ radius=magnitude * 2, # Adjust the radius based on magnitude
+ color='red',
+ fill=True,
+ fill_color='red',
+ popup=f"Location: {location}<br>Latitude: 
+{latitude}<br>Longitude: {longitude}<br>Magnitude: {magnitude}",
+ ).add_to(world_map)
+world_map.save('earthquake_map.html')
+#splitting i t into training and testing sets
+import pandas as pd
+from sklearn.model_selection import train_test_split
+data = pd.read_csv('earthquake_data.csv')
+X = data[['Latitude', 'Longitude']]
+y = data['Magnitude']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, 
+random_state=42)
